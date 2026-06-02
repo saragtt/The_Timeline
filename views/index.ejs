@@ -20,20 +20,27 @@ href="/style.css">
 
 <h1>Timeline</h1>
 
-<% posts.forEach(post => { %>
-
 <div class="post">
+        <h2>Create a new Post</h2>
+        
+        <% if (locals.error) { %>
+            <h3 style="color: red; text-align: center;"><%= error %></h3>
+        <% } %>
 
-<h2><%= post.name %></h2>
+        <form action="/add-post" method="POST">
+            <textarea name="message" placeholder="Type something (at least 25 digit)..." rows="4" style="width: 100%; padding: 10px; box-sizing: border-box; border-radius: 5px;"></textarea>
+            <br><br>
+            <button type="submit" style="background: #333; color: white; padding: 10px; width: 100%; border: none; border-radius: 5px; cursor: pointer;">Publish</button>
+        </form>
+    </div>
 
-<p class="date">
-<%= post.createdAt %>
-</p>
-
-<p><%= post.message %></p>
-
+<% posts.forEach(post => { %>
+<div class="post">
+  <p class="date">
+    Published: <%= post.createdAt ? post.createdAt.toLocaleString('it-IT') : '' %>
+  </p>
+  <p><%= post.post %></p>
 </div>
-
 <% }) %>
 
 </body>
