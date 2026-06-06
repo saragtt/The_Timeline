@@ -3,57 +3,119 @@
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0">
 
-<meta charset="UTF-8">
+  <title>Timeline</title>
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>Timeline</title>
-
-<link rel="stylesheet"
-href="/style.css">
-
+  <link rel="stylesheet"
+    href="/style.css">
 </head>
 
 <body>
 
-<h1>Timeline</h1>
+  <h1>Timeline</h1>
 
-<div class="post">
-        <h2>Create a new Post</h2>
-        
-        <% if (locals.error) { %>
-            <h3 style="color: red; text-align: center;"><%= error %></h3>
-        <% } %>
+  <div class="post">
+    <h2>Create a new Post</h2>
 
-        <form action="/add-post" method="POST">
-            <textarea name="message" placeholder="Type something (at least 25 digit)..." rows="4" style="width: 100%; padding: 10px; box-sizing: border-box; border-radius: 5px;"></textarea>
-            <br><br>
-            <button type="submit" style="background: #333; color: white; padding: 10px; width: 100%; border: none; border-radius: 5px; cursor: pointer;">Publish</button>
-        </form>
-    </div>
+    <% if (locals.error) { %>
+      <h3 style="color: red; text-align: center;">
+        <%= error %>
+      </h3>
+    <% } %>
 
-<% posts.forEach(post => { %>
-<div class="post">
-  <p class="date">
-    Published: <%= post.createdAt ? post.createdAt.toLocaleString('it-IT') : '' %>
-  </p>
+    <form action="/add-post" method="POST">
 
-  <p><%= post.post %></p>
-  <div class="actions">
-    <a href="/edit-post/<%= post._id %>"
-      class="action-button">
-      Edit
-    </a>
+      <input
+        type="text"
+        name="name"
+        placeholder="Your name">
 
-   <form action="/delete-post/<%= post._id %>" method="post">
-     <button type="submit"
-     class="action-button">Delete</button>
+      <textarea
+        name="message"
+        placeholder="Type something (at least 25 characters)..."
+        rows="4"></textarea>
+
+      <button type="submit">
+        Publish
+      </button>
+
     </form>
   </div>
-</div>
-<% }) %>
+
+  <% posts.forEach(post => { %>
+
+    <div class="post">
+
+      <h3><%= post.name %></h3>
+
+      <p class="date">
+        Published:
+        <%= post.createdAt ? post.createdAt.toLocaleString('it-IT') : '' %>
+      </p>
+
+      <p><%= post.post %></p>
+
+      <% comments.forEach(comment => { %>
+
+        <% if (comment.postId.toString() === post._id.toString()) { %>
+
+          <div class="comment">
+
+            <strong><%= comment.name %></strong>
+
+            <p><%= comment.comment %></p>
+
+          </div>
+
+        <% } %>
+
+      <% }) %>
+
+      <div class="actions">
+
+        <a href="/edit-post/<%= post._id %>"
+          class="action-button">
+          Edit
+        </a>
+
+        <form action="/delete-post/<%= post._id %>"
+          method="POST">
+
+          <button
+            type="submit"
+            class="action-button">
+            Delete
+          </button>
+
+        </form>
+
+      </div>
+
+      <form action="/add-comment/<%= post._id %>"
+        method="POST">
+
+        <input
+          type="text"
+          name="name"
+          placeholder="Your name">
+
+        <textarea
+          name="comment"
+          rows="3"
+          placeholder="Write a comment..."></textarea>
+
+        <button type="submit">
+          Post Comment
+        </button>
+
+      </form>
+
+    </div>
+
+  <% }) %>
 
 </body>
 
