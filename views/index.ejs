@@ -39,7 +39,19 @@ href="/style.css">
   <p class="date">
     Published: <%= post.createdAt ? post.createdAt.toLocaleString('it-IT') : '' %>
   </p>
+
   <p><%= post.post %></p>
+  <div class="actions">
+    <a href="/edit-post/<%= post._id %>"
+      class="action-button">
+      Edit
+    </a>
+
+   <form action="/delete-post/<%= post._id %>" method="post">
+     <button type="submit"
+     class="action-button">Delete</button>
+    </form>
+  </div>
 </div>
 <% }) %>
 

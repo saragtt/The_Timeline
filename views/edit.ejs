@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/style.css">
+    <title>Edit Post</title>
+</head>
+<body>
+
+<h1>Edit Post</h1>
+
+<div class="post">
+
+    <% if (error) { %>
+        <h3 class="error">
+            <%= error %>
+        </h3>
+    <% } %>
+
+    <p class="date">
+        Published:
+        <%= post.createdAt.toLocaleString('it-IT') %>
+    </p>
+
+    <form action="/edit-post/<%= post._id %>" method="POST">
+
+        <textarea
+            name="message"
+            rows="5"><%= post.post %></textarea>
+
+        <br><br>
+
+        <button type="submit">
+            Save Changes
+        </button>
+
+    </form>
+
+    <br>
+
+    <a class="back-link" href="/">
+        ← Back to Timeline
+    </a>
+
+</div>
+
+</body>
+</html>

@@ -5,24 +5,11 @@ const app = express();
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
-
 app.use(express.urlencoded({ extended: true }));
 
 require("./config/mongoose.js");
 
-const { Schema } = mongoose;
-const postSchema = new Schema(
-  {
-    post: {
-      type: String,
-      required: true,
-      minlength: [25, "Post should be minimum 25 character "],
-    },
-  },
-  { timestamps: true }
-);
-
-const Post = mongoose.model("Post", postSchema);
+const Post = require("./models/Post");
 
 app.get("/", (req, res) => {
   Post.find()
@@ -62,6 +49,58 @@ app.post("/add-post", (req, res) => {
     });
 });
 
-app.listen(3000, () => {
+app.get("/edit-post/:id", (req, res) => {
+  Post.findById(req.params.id)
+    .then((response) => {
+      res.render("edit", {
+        post: response,
+        error: null,
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+      res.redirect("/");
+    });
+});
+
+app.post("/edit-post/:id", (req, res) => {
+  Post.findByIdAndUpdate(
+    req.params.id,
+    {
+      post: req.body.message,
+    },
+    {
+      runValidators: true,
+    }
+  )
+    .then(() => {
+      res.redirect("/");
+    })
+    .catch((error) => {
+      Post.findById(req.params.id).then((response) => {
+        const messageError = error.errors.post
+          ? error.errors.post.message
+          : "Error";
+
+        res.render("edit", {
+          post: response,
+          error: messageError,
+        });
+      });
+    });
+});
+
+app.post("/delete-post/:id", (req, res) => {
+  Post.findByIdAndDelete(req.params.id)
+    .then(() => {
+      res.redirect("/");
+    })
+    .catch((error) => {
+      console.log(error);
+      res.redirect("/");
+    });
+});
+
+app.listen(5000, () => {
   console.log("Server running");
 });
