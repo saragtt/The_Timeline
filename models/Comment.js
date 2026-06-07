@@ -11,7 +11,7 @@ const commentSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
-      minlength: 25,
+      minlength: [25, "Comment should be minimum 25 character"],
     },
 
     postId: {

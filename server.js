@@ -15,14 +15,13 @@ require("./config/mongoose.js");
 app.get("/", (req, res) => {
   Post.find()
     .then((posts) => {
-      Comment.find()
-        .then((comments) => {
-          res.render("index", {
-            posts: posts,
-            comments: comments,
-            error: null,
-          });
+      Comment.find().then((comments) => {
+        res.render("index", {
+          posts: posts,
+          comments: comments,
+          error: null,
         });
+      });
     })
     .catch((error) => {
       console.log(error);
@@ -49,7 +48,9 @@ app.post("/add-post", (req, res) => {
 
         res.render("index", {
           posts: response,
-          error: messageError,
+          comments: comments,
+          postError: messageError,
+          commentError: null,
         });
       });
     });
@@ -68,8 +69,20 @@ app.post("/add-comment/:id", (req, res) => {
       res.redirect("/");
     })
     .catch((error) => {
-      console.log(error);
-      res.redirect("/");
+      Post.find().then((posts) => {
+        Comment.find().then((comments) => {
+          const messageError = error.errors.comment
+            ? error.errors.comment.message
+            : "Error";
+
+          res.render("index", {
+            posts: posts,
+            comments: comments,
+            postError: null,
+            commentError: messageError,
+          });
+        });
+      });
     });
 });
 
