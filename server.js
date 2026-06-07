@@ -3,20 +3,24 @@ const mongoose = require("mongoose");
 
 const app = express();
 
+const Post = require("./models/Post");
+const Comment = require("./models/Comment");
+
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
 
 require("./config/mongoose.js");
 
-const Post = require("./models/Post");
-
 app.get("/", (req, res) => {
   Post.find()
-    .then((response) => {
-      res.render("index", {
-        posts: response,
-        error: null,
+    .then((posts) => {
+      Comment.find().then((comments) => {
+        res.render("index", {
+          posts: posts,
+          comments: comments,
+          error: null,
+        });
       });
     })
     .catch((error) => {
@@ -27,6 +31,7 @@ app.get("/", (req, res) => {
 
 app.post("/add-post", (req, res) => {
   const newPost = new Post({
+    name: req.body.name,
     post: req.body.message,
   });
 
@@ -43,7 +48,39 @@ app.post("/add-post", (req, res) => {
 
         res.render("index", {
           posts: response,
-          error: messageError,
+          comments: comments,
+          postError: messageError,
+          commentError: null,
+        });
+      });
+    });
+});
+
+app.post("/add-comment/:id", (req, res) => {
+  const newComment = new Comment({
+    name: req.body.name,
+    comment: req.body.comment,
+    postId: req.params.id,
+  });
+
+  newComment
+    .save()
+    .then(() => {
+      res.redirect("/");
+    })
+    .catch((error) => {
+      Post.find().then((posts) => {
+        Comment.find().then((comments) => {
+          const messageError = error.errors.comment
+            ? error.errors.comment.message
+            : "Error";
+
+          res.render("index", {
+            posts: posts,
+            comments: comments,
+            postError: null,
+            commentError: messageError,
+          });
         });
       });
     });
