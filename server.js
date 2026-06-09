@@ -1,14 +1,15 @@
 const express = require("express");
 const mongoose = require("mongoose");
-
 const app = express();
-
 const Post = require("./models/Post");
 const Comment = require("./models/Comment");
+const apiRoutes = require("./routes/apiRoutes");
 
 app.set("view engine", "ejs");
 app.use(express.static("public"));
 app.use(express.urlencoded({ extended: true }));
+app.use(apiRoutes);
+app.use(express.json());
 
 require("./config/mongoose.js");
 
