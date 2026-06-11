@@ -1,64 +1,141 @@
 :root {
-  --page-bg: #f6f7fb;
+  --page-bg: #f4f6f8;
   --surface: #ffffff;
-  --surface-soft: #f9fafc;
-  --text: #1f2937;
-  --muted: #6b7280;
-  --border: #d8dde8;
+  --surface-soft: #f8fafc;
+  --text: #172033;
+  --muted: #687385;
+  --border: #dbe2ea;
   --primary: #2563eb;
-  --primary-dark: #1d4ed8;
+  --primary-dark: #1e40af;
   --danger: #dc2626;
-  --danger-dark: #b91c1c;
-  --shadow: 0 10px 30px rgba(31, 41, 55, 0.08);
+  --danger-dark: #991b1b;
+  --danger-soft: #fff1f2;
+  --danger-border: #fecdd3;
+  --radius: 10px;
+  --shadow: 0 14px 35px rgba(23, 32, 51, 0.08);
 }
 
 * {
   box-sizing: border-box;
 }
 
+html {
+  min-height: 100%;
+}
+
 body {
   min-height: 100vh;
-  max-width: 860px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 32px 18px 48px;
+  padding: 36px 18px 52px;
   background:
-    radial-gradient(circle at top left, rgba(37, 99, 235, 0.12), transparent 32rem),
-    var(--page-bg);
+    radial-gradient(circle at 12% 0%, rgba(37, 99, 235, 0.12), transparent 24rem),
+    linear-gradient(180deg, #ffffff 0%, var(--page-bg) 34%);
   color: var(--text);
-  font-family: Arial, sans-serif;
-  line-height: 1.5;
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.55;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+p {
+  margin-top: 0;
 }
 
 h1 {
-  margin: 0 0 28px;
+  margin-bottom: 24px;
   color: var(--text);
-  font-size: clamp(2rem, 5vw, 3rem);
+  font-size: clamp(2rem, 6vw, 3rem);
+  line-height: 1.1;
   text-align: center;
-}
-
-h2,
-h3,
-p {
-  margin-top: 0;
 }
 
 h2 {
   margin-bottom: 18px;
   font-size: 1.35rem;
+  line-height: 1.25;
 }
 
 h3 {
   margin-bottom: 8px;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
+  line-height: 1.3;
+}
+
+p {
+  margin-bottom: 14px;
 }
 
 a {
   color: var(--primary);
+  font-weight: 700;
   text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-a:hover {
+a:hover,
+a:focus-visible {
   color: var(--primary-dark);
+}
+
+body > a,
+body > p {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 10px 22px 0;
+}
+
+body > p {
+  color: var(--muted);
+  font-weight: 700;
+}
+
+body > form {
+  max-width: 430px;
+  margin: 0 auto 18px;
+  padding: 24px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+body > form + p {
+  display: block;
+  margin: 0 auto;
+  color: var(--muted);
+  text-align: center;
+}
+
+body > form + p a {
+  margin-left: 4px;
+}
+
+.user-bar,
+.post {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.user-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 12px 18px;
+  margin-bottom: 24px;
+  padding: 14px 16px;
+}
+
+.user-bar p {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 700;
 }
 
 .post {
@@ -66,11 +143,6 @@ a:hover {
   margin-bottom: 22px;
   padding: 24px;
   overflow-wrap: break-word;
-  word-wrap: break-word;
-  background: var(--surface);
-  border: 1px solid rgba(216, 221, 232, 0.9);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
 }
 
 .post > p:not(.date) {
@@ -78,13 +150,18 @@ a:hover {
 }
 
 .comment {
-  margin: 16px 0;
-  margin-left: 34px;
+  margin: 16px 0 16px 28px;
   padding: 16px;
   background: var(--surface-soft);
   border: 1px solid var(--border);
   border-left: 4px solid var(--primary);
-  border-radius: 8px;
+  border-radius: var(--radius);
+}
+
+.comment strong {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--text);
 }
 
 .comment p:last-child {
@@ -102,6 +179,12 @@ form {
   gap: 12px;
 }
 
+label {
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
 input,
 textarea {
   width: 100%;
@@ -109,7 +192,7 @@ textarea {
   color: var(--text);
   background: #ffffff;
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: var(--radius);
   font: inherit;
   transition:
     border-color 0.2s ease,
@@ -117,14 +200,19 @@ textarea {
 }
 
 textarea {
-  min-height: 110px;
+  min-height: 112px;
   resize: vertical;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #8a94a6;
 }
 
 input:focus,
 textarea:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.14);
   outline: none;
 }
 
@@ -139,7 +227,7 @@ button,
   color: #ffffff;
   background: var(--primary);
   border: 1px solid var(--primary);
-  border-radius: 8px;
+  border-radius: var(--radius);
   cursor: pointer;
   font: inherit;
   font-weight: 700;
@@ -148,15 +236,20 @@ button,
   transition:
     background-color 0.2s ease,
     border-color 0.2s ease,
+    box-shadow 0.2s ease,
     transform 0.2s ease;
 }
 
 button:hover,
-.action-button:hover {
+button:focus-visible,
+.action-button:hover,
+.action-button:focus-visible {
   color: #ffffff;
   background: var(--primary-dark);
   border-color: var(--primary-dark);
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.18);
   transform: translateY(-1px);
+  outline: none;
 }
 
 .actions {
@@ -177,9 +270,11 @@ button:hover,
   border-color: var(--danger);
 }
 
-.actions form .action-button:hover {
+.actions form .action-button:hover,
+.actions form .action-button:focus-visible {
   background: var(--danger-dark);
   border-color: var(--danger-dark);
+  box-shadow: 0 8px 18px rgba(220, 38, 38, 0.16);
 }
 
 .error,
@@ -189,9 +284,9 @@ h5[style] {
   padding: 12px 14px;
   color: var(--danger) !important;
   text-align: center !important;
-  background: #fef2f2;
-  border: 1px solid #fecaca;
-  border-radius: 8px;
+  background: var(--danger-soft);
+  border: 1px solid var(--danger-border);
+  border-radius: var(--radius);
 }
 
 .back-link {
@@ -199,12 +294,10 @@ h5[style] {
   align-items: center;
   width: fit-content;
   margin-top: 8px;
-  color: var(--primary);
-  font-weight: 700;
 }
 
-.back-link:hover {
-  color: var(--primary-dark);
+.back-link:hover,
+.back-link:focus-visible {
   text-decoration: underline;
 }
 
@@ -217,12 +310,22 @@ br {
     padding: 24px 12px 36px;
   }
 
+  body > a,
+  body > p {
+    margin-bottom: 12px;
+  }
+
+  body > form {
+    padding: 18px;
+  }
+
   .post {
     padding: 18px;
   }
 
   .comment {
-    margin-left: 18px;
+    margin-left: 14px;
+    padding: 14px;
   }
 
   button,

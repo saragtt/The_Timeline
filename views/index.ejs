@@ -17,6 +17,28 @@
 
     <h1>Timeline</h1>
 
+          <% if (currentUser) { %>
+
+        <p>
+          Welcome <%= currentUser.firstName %>
+        </p>
+
+        <a href="/logout">
+          Logout
+        </a>
+
+      <% } else { %>
+
+        <a href="/login">
+          Login
+        </a>
+
+        <a href="/register">
+          Register
+        </a>
+
+      <% } %>
+
     <div class="post">
       <h2>Create a new Post</h2>
 
@@ -27,11 +49,6 @@
       <% } %>
 
       <form action="/add-post" method="POST">
-
-        <input
-          type="text"
-          name="name"
-          placeholder="Your name">
 
         <textarea
           name="message"
@@ -101,11 +118,6 @@
 
         <form action="/add-comment/<%= post._id %>"
           method="POST">
-
-          <input
-            type="text"
-            name="name"
-            placeholder="Your name">
 
           <textarea
             name="comment"
